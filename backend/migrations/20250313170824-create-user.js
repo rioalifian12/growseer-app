@@ -4,23 +4,28 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Users", {
       id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
+        primaryKey: true,
       },
       name: {
         type: Sequelize.STRING(50),
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING(60),
+        type: Sequelize.STRING(40),
         allowNull: false,
         unique: true,
       },
       password: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
         allowNull: false,
+      },
+      role: {
+        type: Sequelize.ENUM("superadmin", "inventory", "sales", "customer"),
+        allowNull: false,
+        defaultValue: "customer",
       },
       phone: {
         type: Sequelize.STRING(14),
@@ -28,27 +33,19 @@ module.exports = {
       },
       address: {
         type: Sequelize.TEXT,
-        allowNull: false,
-      },
-      role_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      referral_code: {
-        type: Sequelize.STRING(50),
         allowNull: true,
       },
-      referred_by: {
-        type: Sequelize.INTEGER,
+      sessionExpiresAt: {
+        type: Sequelize.DATE,
         allowNull: true,
       },
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },
