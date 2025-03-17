@@ -8,17 +8,17 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
-const isInventoryAdmin = (req, res, next) => {
+const isInventory = (req, res, next) => {
   const { role } = req.user;
   if (role !== "inventory") {
     return res.status(403).json({
-      message: "Access denied only",
+      message: "Access denied",
     });
   }
   next();
 };
 
-const isSalesAdmin = (req, res, next) => {
+const isSales = (req, res, next) => {
   const { role } = req.user;
   if (role !== "sales") {
     return res.status(403).json({
@@ -30,6 +30,6 @@ const isSalesAdmin = (req, res, next) => {
 
 module.exports = {
   isAdmin,
-  isInventoryAdmin,
-  isSalesAdmin,
+  isInventory,
+  isSales,
 };

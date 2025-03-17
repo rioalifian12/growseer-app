@@ -138,7 +138,8 @@ const updateUser = async (req, res) => {
     user.phone = phone || user.phone;
     user.address = address || user.address;
     // role boleh diubah hanya oleh superadmin
-    if (role) {
+    const { checkRole } = req.user;
+    if (checkRole === "superadmin") {
       user.role = role || user.role;
     }
 

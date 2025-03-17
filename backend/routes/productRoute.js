@@ -8,11 +8,28 @@ const {
   deleteProduct,
 } = require("../controllers/productController");
 const upload = require("../middleware/uploadMiddleware");
+const { logger } = require("../middleware/logger");
+const { authUser } = require("../middleware/authMiddleware");
+const { isInventory } = require("../middleware/checkRole");
 
-router.post("/", upload.single("imageUrl"), createProduct);
-router.get("/", getProducts);
-router.get("/:id", getProductById);
-router.patch("/:id", upload.single("imageUrl"), updateProduct);
-router.delete("/:id", deleteProduct);
+router.get("/", logger, getProducts);
+router.get("/:id", logger, getProductById);
+router.post(
+  "/",
+  upload.single("imageUrl"),
+  authUser,
+  isInventory,
+  logger,
+  createProduct
+);
+router.patch(
+  "/:id",
+  upload.single("imageUrl"),
+  authUser,
+  isInventory,
+  logger,
+  updateProduct
+);
+router.delete("/:id", authUser, isInventory, logger, deleteProduct);
 
 module.exports = router;

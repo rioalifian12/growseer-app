@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Product } = require("../models");
+const { Product, InventoryFlow } = require("../models");
 const { validate: isUUID } = require("uuid");
 const path = require("path");
 
@@ -73,6 +73,7 @@ const createProduct = async (req, res) => {
       description,
       imageUrl,
     });
+
     res.status(201).json({
       message: "Create product successfully!",
       product,
@@ -125,6 +126,10 @@ const updateProduct = async (req, res) => {
       }
     }
 
+    // Hitung perubahan stok
+    const stockChange = stockCarton - product.stockCarton;
+    const type = stockChange > 0 ? "in" : stockChange < 0 ? "out" : null;
+
     product.name = name || product.name;
     product.pricePerCarton = pricePerCarton || product.pricePerCarton;
     product.pricePerBox = pricePerBox || product.pricePerBox;
@@ -135,6 +140,16 @@ const updateProduct = async (req, res) => {
     product.imageUrl = imageUrl;
 
     await product.save();
+
+    // Jika stok berubah, catat di InventoryFlow
+    if (type) {
+      await InventoryFlow.create({
+        productId: product.id,
+        type,
+        quantity: Math.abs(stockChange),
+        description: `Stock ${type} by ${Math.abs(stockChange)}`,
+      });
+    }
     res.status(200).json({
       message: "Update product successfully!",
       product,

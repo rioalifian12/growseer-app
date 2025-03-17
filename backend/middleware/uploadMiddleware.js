@@ -20,7 +20,7 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb("Format now allowed!");
+    cb("Format not allowed!");
   }
 };
 

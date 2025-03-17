@@ -1,64 +1,53 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Product extends Model {
+  class InventoryFlow extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Product.hasMany(models.InventoryFlow, {
+      InventoryFlow.belongsTo(models.Product, {
         foreignKey: "productId",
-        as: "inventoryFlows",
+        as: "product",
       });
     }
   }
-  Product.init(
+  InventoryFlow.init(
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
         primaryKey: true,
       },
-      name: {
-        type: DataTypes.STRING,
+      productId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "Products",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
+      type: {
+        type: DataTypes.ENUM("in", "out"),
         allowNull: false,
       },
-      pricePerCarton: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-      },
-      pricePerBox: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-      },
-      stockCarton: {
+      quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      boxPerCarton: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      unitType: {
-        type: DataTypes.ENUM("carton", "box"),
-        allowNull: false,
-        defaultValue: "carton",
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      imageUrl: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
     },
     {
       sequelize,
-      modelName: "Product",
+      modelName: "InventoryFlow",
     }
   );
-  return Product;
+  return InventoryFlow;
 };
