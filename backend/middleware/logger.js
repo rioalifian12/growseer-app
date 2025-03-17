@@ -1,20 +1,22 @@
 const { AppLog } = require("../models");
 
 const logger = async (req, res, next) => {
-  try {
-    const { user, method, originalUrl, body } = req;
+  res.on("finish", async () => {
+    try {
+      const { user, method, originalUrl } = req;
+      const status = res.statusCode;
 
-    await AppLog.create({
-      userId: user ? user.id : null,
-      action: `${method} ${originalUrl}`,
-      details: JSON.stringify(body),
-    });
+      await AppLog.create({
+        userId: user ? user.id : null,
+        action: `${method}`,
+        details: JSON.stringify({ method, originalUrl, status }),
+      });
+    } catch (error) {
+      console.error("Logging error: ", error.message);
+    }
+  });
 
-    next();
-  } catch (error) {
-    console.error("Logging error: ", error.message);
-    next();
-  }
+  next();
 };
 
 module.exports = { logger };

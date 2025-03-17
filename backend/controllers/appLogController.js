@@ -1,4 +1,5 @@
 const { AppLog } = require("../models");
+const { validate: isUUID } = require("uuid");
 
 const getAppLog = async (req, res) => {
   try {
@@ -14,6 +15,7 @@ const getAppLog = async (req, res) => {
     });
   }
 };
+
 const getAppLogById = async (req, res) => {
   try {
     const { id } = req.params;
