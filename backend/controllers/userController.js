@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const { UserDetail } = require("../models");
 const { validate: isUUID } = require("uuid");
 require("dotenv").config();
 
@@ -45,16 +46,12 @@ const getUserById = async (req, res) => {
 // Register User
 const register = async (req, res) => {
   try {
-    const { name, email, password, phone, address } = req.body;
+    const { email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await User.create({
-      name,
       email,
       password: hashedPassword,
-      role: "customer",
-      phone,
-      address,
     });
     res.status(201).json({
       message: "Register user successfully!",
@@ -72,7 +69,10 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne(
+      { where: { email } },
+      { attributes: { exclude: ["password"] } }
+    );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -92,6 +92,7 @@ const login = async (req, res) => {
     res.status(200).json({
       message: "Login successfully!",
       token,
+      user,
     });
   } catch (error) {
     res.status(500).json({
@@ -128,15 +129,10 @@ const logout = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password, phone, address, role } = req.body;
+    const { role } = req.body;
     const user = await User.findByPk(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    user.name = name || user.name;
-    user.email = email || user.email;
-    user.password = password || user.password;
-    user.phone = phone || user.phone;
-    user.address = address || user.address;
     // role boleh diubah hanya oleh superadmin
     const { checkRole } = req.user;
     if (checkRole === "superadmin") {

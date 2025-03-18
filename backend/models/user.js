@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      User.hasOne(models.UserDetail, { foreignKey: "userId", as: "detail" });
       User.hasMany(models.AppLog, { foreignKey: "userId", as: "logs" });
     }
   }
@@ -19,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      name: { type: DataTypes.STRING(50), allowNull: false },
       email: { type: DataTypes.STRING(40), allowNull: false, unique: true },
       password: { type: DataTypes.STRING, allowNull: false },
       role: {
@@ -27,8 +27,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "customer",
       },
-      phone: { type: DataTypes.STRING(14), allowNull: false },
-      address: { type: DataTypes.TEXT, allowNull: true },
       sessionExpiresAt: { type: DataTypes.DATE, allowNull: true },
     },
     {
