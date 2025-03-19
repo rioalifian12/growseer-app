@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const { UserDetail } = require("../models");
 const { User } = require("../models");
 const { validate: isUUID } = require("uuid");

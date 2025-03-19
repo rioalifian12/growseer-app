@@ -8,7 +8,7 @@ const { authUser } = require("../middleware/authMiddleware");
 const { isInventory } = require("../middleware/checkRole");
 const { logger } = require("../middleware/logger");
 
-router.get("/", authUser, isInventory, logger, getInventoryFlow);
-router.get("/:id", authUser, isInventory, logger, getInventoryFlowById);
+router.get("/", logger, authUser, isInventory, getInventoryFlow);
+router.get("/:id", logger, authUser, isInventory, getInventoryFlowById);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const { authUser } = require("../middleware/authMiddleware");
 const { isAdmin } = require("../middleware/checkRole");
 const { logger } = require("../middleware/logger");
 
-router.get("/", authUser, isAdmin, logger, getAppLog);
-router.get("/:id", authUser, isAdmin, logger, getAppLogById);
+router.get("/", logger, authUser, isAdmin, getAppLog);
+router.get("/:id", logger, authUser, isAdmin, getAppLogById);
 
 module.exports = router;

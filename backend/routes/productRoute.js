@@ -11,25 +11,28 @@ const upload = require("../middleware/uploadMiddleware");
 const { logger } = require("../middleware/logger");
 const { authUser } = require("../middleware/authMiddleware");
 const { isInventory } = require("../middleware/checkRole");
+const errorHandlerUpload = require("../middleware/errorHandlerUpload");
 
 router.get("/", logger, getProducts);
 router.get("/:id", logger, getProductById);
 router.post(
   "/",
-  upload.single("imageUrl"),
+  logger,
   authUser,
   isInventory,
-  logger,
+  upload.single("imageUrl"),
+  errorHandlerUpload,
   createProduct
 );
 router.patch(
   "/:id",
-  upload.single("imageUrl"),
+  logger,
   authUser,
   isInventory,
-  logger,
+  upload.single("imageUrl"),
+  errorHandlerUpload,
   updateProduct
 );
-router.delete("/:id", authUser, isInventory, logger, deleteProduct);
+router.delete("/:id", logger, authUser, isInventory, deleteProduct);
 
 module.exports = router;

@@ -16,13 +16,13 @@ const { logger } = require("../middleware/logger");
 
 const router = express.Router();
 
-router.get("/", authUser, isAdmin, logger, getUsers);
-router.get("/:id", authUser, logger, getUserById);
-router.post("/register", validateUser, logger, register);
+router.get("/", logger, authUser, isAdmin, getUsers);
+router.get("/:id", logger, authUser, getUserById);
+router.post("/register", logger, validateUser, register);
 router.post("/login", logger, login);
-router.post("/logout", authUser, logger, logout);
-router.patch("/:id", authUser, validateUser, logger, updateUser);
-router.patch("/password/:id", authUser, logger, updatePassword);
-router.delete("/:id", authUser, isAdmin, logger, deleteUser);
+router.post("/logout", logger, authUser, logout);
+router.patch("/:id", logger, authUser, validateUser, updateUser);
+router.patch("/password/:id", logger, authUser, updatePassword);
+router.delete("/:id", logger, authUser, isAdmin, deleteUser);
 
 module.exports = router;
