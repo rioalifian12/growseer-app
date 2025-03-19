@@ -17,14 +17,14 @@ module.exports = {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       totalAmount: {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM("processing", "shipped", "completed"),
+        type: Sequelize.ENUM("processing", "shipped", "completed", "canceled"),
         allowNull: false,
       },
       createdAt: {

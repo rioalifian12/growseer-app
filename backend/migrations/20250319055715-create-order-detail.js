@@ -17,7 +17,7 @@ module.exports = {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       productId: {
         type: Sequelize.UUID,
@@ -27,13 +27,17 @@ module.exports = {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      subtotal: {
+      unitType: {
+        type: Sequelize.ENUM("carton", "box"),
+        allowNull: false,
+      },
+      subTotal: {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },

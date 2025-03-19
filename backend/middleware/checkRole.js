@@ -28,8 +28,19 @@ const isSales = (req, res, next) => {
   next();
 };
 
+const isCustomer = (req, res, next) => {
+  const { role } = req.user;
+  if (role !== "customer") {
+    return res.status(403).json({
+      message: "Access denied",
+    });
+  }
+  next();
+};
+
 module.exports = {
   isAdmin,
   isInventory,
   isSales,
+  isCustomer,
 };

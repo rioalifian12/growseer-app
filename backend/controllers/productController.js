@@ -74,6 +74,15 @@ const createProduct = async (req, res) => {
       imageUrl,
     });
 
+    if (stockCarton > 0) {
+      await InventoryFlow.create({
+        productId: product.id,
+        type: "in",
+        quantity: stockCarton,
+        description: `Initial stock added: ${stockCarton} cartons`,
+      });
+    }
+
     res.status(201).json({
       message: "Create product successfully!",
       product,

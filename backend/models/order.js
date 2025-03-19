@@ -8,13 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Order.belongsTo(models.Product, {
-        foreignKey: "userId",
-        as: "user",
-      });
-      Order.hasMany(models.DetailOrder, {
+      Order.belongsTo(models.User, { foreignKey: "userId", as: "user" });
+      Order.hasMany(models.OrderDetail, {
         foreignKey: "orderId",
-        as: "orderDetail",
+        as: "orderDetails",
       });
     }
   }
@@ -34,14 +31,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
       status: {
-        type: DataTypes.ENUM("processing", "shipped", "completed"),
+        type: DataTypes.ENUM("processing", "shipped", "completed", "canceled"),
         allowNull: false,
         defaultValue: "processing",
       },

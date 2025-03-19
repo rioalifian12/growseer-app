@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       productId: {
         type: DataTypes.UUID,
@@ -44,10 +44,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       quantity: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      unitType: {
+        type: DataTypes.ENUM("carton", "box"),
         allowNull: false,
       },
       subTotal: {
