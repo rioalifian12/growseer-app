@@ -8,11 +8,9 @@ const createOrder = async (req, res) => {
 
     const userDetail = await UserDetail.findOne({ where: { userId: userId } });
     if (!userDetail) {
-      return res
-        .status(400)
-        .json({
-          message: "Before making an order, fill in the user details first",
-        });
+      return res.status(400).json({
+        message: "Before making an order, fill in the user details first",
+      });
     }
 
     if (!Array.isArray(orderDetail) || orderDetail.length === 0) {
@@ -114,6 +112,82 @@ const createOrder = async (req, res) => {
   }
 };
 
+const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.findAll();
+
+    if (!orders) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error!",
+      error: error.message,
+    });
+  }
+};
+
+const getOrdersById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findByPk(id, {
+      include: [
+        {
+          model: OrderDetail,
+          as: "orderDetails",
+          attributes: ["productId", "quantity", "unitType", "subTotal"],
+        },
+      ],
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+
+    res.status(200).json({ order });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error!",
+      error: error.message,
+    });
+  }
+};
+
+const updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const validStatus = ["processing", "shipped", "completed", "canceled"];
+    if (status && !validStatus.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid status",
+      });
+    }
+
+    const order = await Order.findByPk(id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    order.status = status || order.status;
+    console.log(order.status);
+
+    await order.save();
+    res.status(201).json({
+      message: "Update order detail successfully",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error!",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createOrder,
+  getOrders,
+  getOrdersById,
+  updateOrder,
 };
