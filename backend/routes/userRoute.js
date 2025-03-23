@@ -3,6 +3,7 @@ const {
   getUsers,
   getUserById,
   register,
+  createUser,
   login,
   logout,
   updateUser,
@@ -16,8 +17,9 @@ const { logger } = require("../middleware/logger");
 
 const router = express.Router();
 
-router.get("/", logger, authUser, isAdmin, getUsers);
+router.get("/", logger, authUser, getUsers);
 router.get("/:id", logger, authUser, getUserById);
+router.post("/", logger, authUser, isAdmin, validateUser, createUser);
 router.post("/register", logger, validateUser, register);
 router.post("/login", logger, login);
 router.post("/logout", logger, authUser, logout);

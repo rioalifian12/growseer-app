@@ -1,18 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      User.hasOne(models.UserDetail, { foreignKey: "userId", as: "detail" });
       User.hasMany(models.AppLog, { foreignKey: "userId", as: "logs" });
       User.hasMany(models.Order, { foreignKey: "userId", as: "order" });
+
+      User.hasMany(User, { foreignKey: "referredBy", as: "customers" });
+      User.belongsTo(User, { foreignKey: "referredBy", as: "sales" });
     }
   }
+
   User.init(
     {
       id: {
@@ -23,10 +22,28 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: { type: DataTypes.STRING(40), allowNull: false, unique: true },
       password: { type: DataTypes.STRING, allowNull: false },
+      name: { type: DataTypes.STRING(50), allowNull: true },
+      phone: { type: DataTypes.STRING(14), allowNull: true },
+      address: { type: DataTypes.TEXT, allowNull: true },
       role: {
         type: DataTypes.ENUM("superadmin", "inventory", "sales", "customer"),
         allowNull: false,
         defaultValue: "customer",
+      },
+      referralCode: {
+        type: DataTypes.STRING(10),
+        unique: true,
+        allowNull: true,
+      },
+      referredBy: {
+        type: DataTypes.STRING(10),
+        allowNull: true,
+        references: {
+          model: "Users",
+          key: "referralCode",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       sessionExpiresAt: { type: DataTypes.DATE, allowNull: true },
     },

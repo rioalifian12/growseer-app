@@ -18,10 +18,37 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      name: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      phone: {
+        type: Sequelize.STRING(14),
+        allowNull: true,
+      },
+      address: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       role: {
         type: Sequelize.ENUM("superadmin", "inventory", "sales", "customer"),
         allowNull: false,
         defaultValue: "customer",
+      },
+      referralCode: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
+        unique: true,
+      },
+      referredBy: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
+        references: {
+          model: "Users",
+          key: "referralCode",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       sessionExpiresAt: {
         type: Sequelize.DATE,
@@ -37,6 +64,7 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("Users");
   },

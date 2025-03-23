@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
-const { UserDetail } = require("../models");
 const { validate: isUUID } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
 // Get All Users
@@ -46,15 +46,51 @@ const getUserById = async (req, res) => {
 // Register User
 const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name, phone, referredBy } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = await User.create({
       email,
       password: hashedPassword,
+      name,
+      phone,
+      referredBy,
     });
     res.status(201).json({
       message: "Register user successfully!",
+      newUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error!",
+      error: error.message,
+    });
+  }
+};
+
+// Create User
+const createUser = async (req, res) => {
+  try {
+    const { email, password, name, phone, role } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    let referralCode = null;
+    if (role === "sales") {
+      referralCode = uuidv4().slice(0, 8);
+    }
+
+    const newUser = await User.create({
+      email,
+      password: hashedPassword,
+      name,
+      phone,
+      role,
+      referralCode,
+    });
+    res.status(201).json({
+      message: "Create user successfully!",
       newUser,
     });
   } catch (error) {
@@ -74,7 +110,7 @@ const login = async (req, res) => {
       { attributes: { exclude: ["password"] } }
     );
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Email not registered" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -129,12 +165,17 @@ const logout = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { role } = req.body;
+    const { name, phone, address, role, referredBy } = req.body;
     const user = await User.findByPk(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // role boleh diubah hanya oleh superadmin
     const { checkRole } = req.user;
+    user.name = name || user.name;
+    user.phone = phone || user.phone;
+    user.address = address || user.address;
+    user.referredBy = referredBy || user.referredBy;
+
+    // role boleh diubah hanya oleh superadmin
     if (checkRole === "superadmin") {
       user.role = role || user.role;
     }
@@ -203,6 +244,7 @@ module.exports = {
   getUsers,
   getUserById,
   register,
+  createUser,
   login,
   logout,
   updateUser,

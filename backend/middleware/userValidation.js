@@ -11,14 +11,12 @@ const validateUser = [
       const { id } = req.params;
       if (id) {
         const user = await User.findByPk(id);
-        name = user.name;
-
-        if (name === user.name) {
-          return true;
-        }
+        if (!user) throw new Error("User not found");
+        if (name === user.name) return true;
       }
     })
     .optional(),
+
   body("email")
     .notEmpty()
     .withMessage("Email cannot be empty!")
@@ -28,11 +26,8 @@ const validateUser = [
       const { id } = req.params;
       if (id) {
         const user = await User.findByPk(id);
-        email = user.email;
-
-        if (email === user.email) {
-          return true;
-        }
+        if (!user) throw new Error("User not found");
+        if (email === user.email) return true;
       }
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
@@ -40,23 +35,14 @@ const validateUser = [
       }
     })
     .optional(),
+
   body("password")
     .notEmpty()
     .withMessage("Password cannot be empty!")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters")
-    .custom(async (password, { req }) => {
-      const { id } = req.params;
-      if (id) {
-        const user = await User.findByPk(id);
-        password = user.password;
-
-        if (password === user.password) {
-          return true;
-        }
-      }
-    })
     .optional(),
+
   body("phone")
     .notEmpty()
     .withMessage("Phone cannot be empty")
@@ -66,14 +52,40 @@ const validateUser = [
       const { id } = req.params;
       if (id) {
         const user = await User.findByPk(id);
-        phone = user.phone;
-
-        if (phone === user.phone) {
-          return true;
-        }
+        if (!user) throw new Error("User not found");
+        if (phone === user.phone) return true;
       }
     })
     .optional(),
+
+  body("role")
+    .custom(async (role, { req }) => {
+      const { id } = req.params;
+      if (id) {
+        const user = await User.findByPk(id);
+        if (!user) throw new Error("User not found");
+        if (role === user.role) return true;
+      }
+      if (!["superadmin", "inventory", "sales", "customer"].includes(role)) {
+        throw new Error("Role invalid");
+      }
+      return true;
+    })
+    .optional(),
+
+  body("referredBy")
+    .custom(async (referredBy) => {
+      if (!referredBy) return true;
+      const existingReferral = await User.findOne({
+        where: { referralCode: referredBy, role: "sales" },
+      });
+      if (!existingReferral) {
+        throw new Error("Referral code invalid");
+      }
+      return true;
+    })
+    .optional(),
+
   (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
