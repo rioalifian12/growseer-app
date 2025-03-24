@@ -5,11 +5,14 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="navbar bg-white drop-shadow-sm">
+    <div className="navbar bg-white border-b-1 border-gray-200">
       <div className="container mx-auto">
         <div className="navbar">
           <div className="navbar-start">
-            <Link to="/" className="text-3xl pb-2 font-semibold text-primary">
+            <Link
+              to="/"
+              className="text-2xl md:text-3xl pb-2 font-semibold text-primary"
+            >
               Growseer
             </Link>
           </div>
@@ -80,8 +83,10 @@ const Navbar = () => {
                     tabIndex={0}
                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
                   >
-                    <li>
-                      <a className="text-sm">Profil</a>
+                    <li className="text-black">
+                      <Link to="/profile" className="text-sm">
+                        Profil
+                      </Link>
                     </li>
                     <li>
                       <a className="text-sm">Pesanan Saya</a>
@@ -144,7 +149,9 @@ const Navbar = () => {
                 {user ? (
                   <ul>
                     <li>
-                      <a className="text-sm">Profil</a>
+                      <Link to="/profile" className="text-sm">
+                        Profil
+                      </Link>
                     </li>
                     <li>
                       <a className="text-sm">Pesanan Saya</a>

@@ -1,6 +1,11 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser, logoutUser, fetchUserById } from "../services/ServiceUser";
+import {
+  loginUser,
+  logoutUser,
+  fetchUserById,
+  registerUser,
+} from "../services/ServiceUser";
 
 const AuthContext = createContext();
 
@@ -36,19 +41,38 @@ export const AuthProvider = ({ children }) => {
       setUser(response.user);
       localStorage.setItem("token", response.token);
       localStorage.setItem("userId", response.user.id);
-      if (response.user.role === "customer") {
-        navigate("/");
-      } else if (response.user.role === "superadmin") {
-        navigate("/superadmin");
-      } else if (response.user.role === "inventory") {
-        navigate("/inventory");
-      } else if (response.user.role === "sales") {
-        navigate("/sales");
+
+      switch (response.user.role) {
+        case "customer":
+          navigate("/");
+          break;
+        case "superadmin":
+          navigate("/superadmin");
+          break;
+        case "inventory":
+          navigate("/inventory");
+          break;
+        case "sales":
+          navigate("/sales");
+          break;
+        default:
+          navigate("/");
       }
-      return { success: true };
+      return response.user;
     } catch (error) {
-      alert("Login failed: " + error.message);
-      return { success: false, error: error.message };
+      console.error(`Login error: ${error.message}`);
+      throw error;
+    }
+  };
+
+  const signup = async (userData) => {
+    try {
+      const response = await registerUser(userData);
+      navigate("/login");
+      return response;
+    } catch (error) {
+      console.error(`Signup error: ${error.message}`);
+      throw error;
     }
   };
 
@@ -61,12 +85,13 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
+      localStorage.removeItem("role");
       navigate("/");
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );

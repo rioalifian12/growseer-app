@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
@@ -5,6 +6,18 @@ import { useAuth } from "../context/AuthContext";
 const FormLogin = () => {
   const { register, handleSubmit } = useForm();
   const { login } = useAuth();
+  const [error, setError] = useState("");
+
+  const onSubmit = async (credentials) => {
+    try {
+      await login(credentials);
+      setError("");
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError("Email atau password salah!");
+      }
+    }
+  };
 
   return (
     <>
@@ -30,7 +43,13 @@ const FormLogin = () => {
                 </svg>
               </Link>
             </legend>
-            <form onSubmit={handleSubmit(login)} className="space-y-2">
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+              {error && (
+                <div role="alert" className="alert alert-error alert-soft">
+                  <span>{error}</span>
+                </div>
+              )}
               <label htmlFor="email" className="fieldset-label text-black">
                 Email
               </label>
@@ -38,7 +57,6 @@ const FormLogin = () => {
                 type="email"
                 className="input rounded-box w-full focus:input-primary focus:outline-0"
                 id="email"
-                name="email"
                 {...register("email", { required: true })}
                 placeholder="Email"
               />
@@ -53,7 +71,6 @@ const FormLogin = () => {
                 type="password"
                 className="input rounded-box w-full focus:input-primary focus:outline-0"
                 id="password"
-                name="password"
                 {...register("password", { required: true })}
                 placeholder="Password"
               />
@@ -62,7 +79,7 @@ const FormLogin = () => {
                 Login
               </button>
 
-              <p className="fieldset-label text-sm text-black mt-4 justify-center">
+              <p className="fieldset-label text-sm text-black mt-4 text-center">
                 Belum punya akun?
                 <Link to="/register" className="text-primary font-medium">
                   Daftar

@@ -27,15 +27,13 @@ const Home = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Membuat halaman full height */}
       <Navbar />
       <div className="flex-grow">
-        {/* Membuat konten fleksibel */}
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-bold text-center mb-6">Produk Kami</h1>
 
           {loading ? (
-            <p className="text-center text-gray-500">Loading...</p>
+            <span className="loading loading-spinner loading-xl flex justify-self-center"></span>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {products.length > 0 ? (
@@ -43,7 +41,7 @@ const Home = () => {
                   <Link
                     key={product.id}
                     to={`/product/${product.id}`}
-                    className="card bg-base-100 shadow-md cursor-pointer"
+                    className="card bg-base-100 shadow-sm border-1 border-gray-100 cursor-pointer"
                   >
                     <figure>
                       <img

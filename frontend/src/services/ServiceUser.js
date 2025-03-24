@@ -28,7 +28,7 @@ export const fetchUserById = async (id) => {
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/user/register`, userData);
-    return response.data;
+    return response.data.newUser;
   } catch (error) {
     console.error(`Error registering user: ${error.message}`);
     throw error;
@@ -67,7 +67,7 @@ export const logoutUser = async () => {
 export const updateUser = async (id, updatedData) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.put(`${API_URL}/user/${id}`, updatedData, {
+    const response = await axios.patch(`${API_URL}/user/${id}`, updatedData, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -80,7 +80,7 @@ export const updateUser = async (id, updatedData) => {
 export const updatePassword = async (id, passwordData) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.put(
+    const response = await axios.patch(
       `${API_URL}/user/password/${id}`,
       passwordData,
       {
