@@ -80,7 +80,7 @@ const validateUser = [
         where: { referralCode: referredBy, role: "sales" },
       });
       if (!existingReferral) {
-        throw new Error("Referral code invalid");
+        throw new Error("Invalid referral code");
       }
       return true;
     })

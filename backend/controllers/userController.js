@@ -46,17 +46,36 @@ const getUserById = async (req, res) => {
 // Register User
 const register = async (req, res) => {
   try {
-    const { email, password, name, phone, referredBy } = req.body;
+    const {
+      email,
+      password,
+      name,
+      phone,
+      address,
+      latitude,
+      longitude,
+      referredBy,
+    } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+
+    let mapsUrl = null;
+    if (latitude && longitude) {
+      mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    }
 
     const newUser = await User.create({
       email,
       password: hashedPassword,
       name,
       phone,
+      address,
+      latitude,
+      longitude,
+      mapsUrl,
       referredBy,
     });
+
     res.status(201).json({
       message: "Register user successfully!",
       newUser,
@@ -165,15 +184,24 @@ const logout = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, phone, address, role, referredBy } = req.body;
+    const { name, phone, address, role, referredBy, latitude, longitude } =
+      req.body;
+
     const user = await User.findByPk(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const { checkRole } = req.user;
+
     user.name = name || user.name;
     user.phone = phone || user.phone;
     user.address = address || user.address;
     user.referredBy = referredBy || user.referredBy;
+
+    if (latitude && longitude) {
+      user.latitude = latitude;
+      user.longitude = longitude;
+      user.mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    }
 
     // role boleh diubah hanya oleh superadmin
     if (checkRole === "superadmin") {

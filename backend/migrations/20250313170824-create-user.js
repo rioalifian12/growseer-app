@@ -30,6 +30,18 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      latitude: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
+      },
+      longitude: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
+      },
+      mapsUrl: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       role: {
         type: Sequelize.ENUM("superadmin", "inventory", "sales", "customer"),
         allowNull: false,

@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING(50), allowNull: true },
       phone: { type: DataTypes.STRING(14), allowNull: true },
       address: { type: DataTypes.TEXT, allowNull: true },
+      latitude: { type: DataTypes.FLOAT, allowNull: true },
+      longitude: { type: DataTypes.FLOAT, allowNull: true },
+      mapsUrl: { type: DataTypes.STRING, allowNull: true },
       role: {
         type: DataTypes.ENUM("superadmin", "inventory", "sales", "customer"),
         allowNull: false,
