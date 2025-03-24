@@ -8,7 +8,7 @@ const getProducts = async (req, res) => {
   try {
     const products = await Product.findAll();
 
-    if (!products) {
+    if (products.length <= 0) {
       return res.status(404).json({ message: "Product not found!" });
     }
     res.status(200).json(products);
