@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 const Footer = () => {
   return (
-    <div className="bg-primary text-white p-10">
+    <div className="bg-primary text-white p-10 mt-10">
       <div className="footer container mx-auto sm:footer-horizontal">
         <aside>
           <Link className="text-3xl pb-2 font-semibold text-white">

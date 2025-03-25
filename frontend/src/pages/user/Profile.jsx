@@ -9,36 +9,38 @@ const Profile = () => {
       <div className="flex-grow">
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-bold text-center mb-6">Profil</h1>
-          <div className="tabs tabs-border border-1 w-1/2 border-gray-100 rounded-lg flex justify-self-center">
-            <input
-              type="radio"
-              name="my_tabs"
-              className="tab font-bold focus:text-primary hover:text-primary"
-              aria-label="Profil Saya"
-              defaultChecked
-            />
-            <div className="tab-content border-base-300 bg-base-100 p-2">
-              <EditProfile />
-            </div>
+          <div className="w-full max-w-xl mx-auto">
+            <div className="tabs tabs-border border-gray-200 bg-gray-100 rounded-lg flex flex-wrap justify-center">
+              <input
+                type="radio"
+                name="my_tabs"
+                className="tab font-bold w-1/3"
+                aria-label="Biodata"
+                defaultChecked
+              />
+              <div className="tab-content border-base-300 bg-base-100 p-2">
+                <EditProfile />
+              </div>
 
-            <input
-              type="radio"
-              name="my_tabs"
-              className="tab font-bold focus:text-primary hover:text-primary"
-              aria-label="Ubah Alamat"
-            />
-            <div className="tab-content border-base-300 bg-base-100 p-10">
-              Tab content 2
-            </div>
+              <input
+                type="radio"
+                name="my_tabs"
+                className="tab font-bold w-1/3"
+                aria-label="Alamat"
+              />
+              <div className="tab-content border-base-300 bg-base-100 p-10">
+                Tab content 2
+              </div>
 
-            <input
-              type="radio"
-              name="my_tabs"
-              className="tab font-bold focus:text-primary hover:text-primary"
-              aria-label="Ubah Password"
-            />
-            <div className="tab-content border-base-300 bg-base-100 p-10">
-              Tab content 3
+              <input
+                type="radio"
+                name="my_tabs"
+                className="tab font-bold w-1/3"
+                aria-label="Password"
+              />
+              <div className="tab-content border-base-300 bg-base-100 p-10">
+                Tab content 3
+              </div>
             </div>
           </div>
         </div>

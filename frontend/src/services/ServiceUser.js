@@ -27,7 +27,30 @@ export const fetchUserById = async (id) => {
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/user/register`, userData);
+    const getLocation = () =>
+      new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            resolve({ latitude: null, longitude: null });
+          }
+        );
+      });
+
+    const { latitude, longitude } = await getLocation();
+
+    const updatedUserData = { ...userData, latitude, longitude };
+
+    const response = await axios.post(
+      `${API_URL}/user/register`,
+      updatedUserData
+    );
     return response.data.newUser;
   } catch (error) {
     console.error(`Error registering user: ${error.message}`);
