@@ -12,7 +12,6 @@ const Navbar = () => {
     const getUserById = async () => {
       if (!id) return;
       const userDetail = await fetchUserById(id);
-      console.log(userDetail);
 
       if (userDetail) {
         setValueName(userDetail);
@@ -62,11 +61,11 @@ const Navbar = () => {
                 className="card card-compact dropdown-content bg-base-100 z-10 mt-3 w-52 shadow"
               >
                 <div className="card-body">
-                  <span className="text-lg font-bold">8 Items</span>
-                  <span className="text-info">Subtotal: $999</span>
+                  <span className="text-lg font-bold">8 Produk</span>
+                  <span className="text-success">Subtotal: Rp. 230000</span>
                   <div className="card-actions">
-                    <button className="btn btn-primary btn-block">
-                      View cart
+                    <button className="btn btn-primary btn-block text-white rounded-box">
+                      Lihat Keranjang
                     </button>
                   </div>
                 </div>

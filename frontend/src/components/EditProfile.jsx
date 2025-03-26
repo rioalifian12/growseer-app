@@ -46,10 +46,10 @@ const EditProfile = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-4 max-2-xl mx-auto"
       >
-        <h2 className="text-lg text-center font-bold">Ubah Biodata Saya</h2>
+        <h2 className="text-lg text-center font-bold">Ubah Biodata</h2>
         {success && (
-          <div className="alert alert-success text-white">
-            <span>Ubah biodata berhasil</span>
+          <div className="alert alert-success alert-soft">
+            <span>Ubah biodata berhasil !</span>
           </div>
         )}
         <table className="table border-collapse border-transparent">
