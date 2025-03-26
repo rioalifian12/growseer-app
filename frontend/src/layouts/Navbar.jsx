@@ -1,8 +1,25 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { fetchUserById } from "../services/ServiceUser";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const [name, setValueName] = useState({});
+  const id = user?.id;
+
+  useEffect(() => {
+    const getUserById = async () => {
+      if (!id) return;
+      const userDetail = await fetchUserById(id);
+      console.log(userDetail);
+
+      if (userDetail) {
+        setValueName(userDetail);
+      }
+    };
+    getUserById();
+  }, [id, setValueName]);
 
   return (
     <div className="navbar bg-white border-b-1 border-gray-200">
@@ -62,7 +79,11 @@ const Navbar = () => {
             <div className="hidden lg:flex gap-3">
               {user ? (
                 <div className="dropdown dropdown-end">
-                  <div tabIndex={0} role="button" className="cursor-pointer">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="flex cursor-pointer"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -74,10 +95,10 @@ const Navbar = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
-                      <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
-                      <circle cx="12" cy="10" r="3" />
-                      <circle cx="12" cy="12" r="10" />
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
                     </svg>
+                    <span className="font-semibold ml-1">{name.name}</span>
                   </div>
                   <ul
                     tabIndex={0}

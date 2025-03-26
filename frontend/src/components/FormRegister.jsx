@@ -176,23 +176,20 @@ const FormRegister = () => {
               Ambil Lokasi
             </button>
 
-            <div className="text-black text-sm mt-4">
-              {location.latitude && location.longitude ? (
-                <p>
-                  <strong>Lokasi : </strong>
-                  <a
-                    href={`https://www.google.com/maps?q=${location.latitude},${location.longitude}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary"
-                  >
-                    Cek di Google Maps
-                  </a>
-                </p>
-              ) : (
-                <p className="text-error">Lokasi belum diambil.</p>
-              )}
-            </div>
+            {location.latitude && location.longitude ? (
+              <div className="mt-4">
+                <strong>Lokasi Anda : </strong>
+                <iframe
+                  src={`https://maps.google.com/maps?q=${location.latitude},${location.longitude}&hl=id&z=14&output=embed`}
+                  width="100%"
+                  height="200"
+                ></iframe>
+              </div>
+            ) : (
+              <p className="text-error mt-4">
+                Pastikan koneksi yang digunakan stabil!
+              </p>
+            )}
 
             <button
               type="submit"

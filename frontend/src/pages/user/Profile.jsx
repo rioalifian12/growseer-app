@@ -1,6 +1,7 @@
 import Navbar from "../../layouts/Navbar";
 import Footer from "../../layouts/Footer";
 import EditProfile from "../../components/EditProfile";
+import EditAddress from "../../components/EditAddress";
 
 const Profile = () => {
   return (
@@ -8,7 +9,6 @@ const Profile = () => {
       <Navbar />
       <div className="flex-grow">
         <div className="container mx-auto p-4">
-          <h1 className="text-2xl font-bold text-center mb-6">Profil</h1>
           <div className="w-full max-w-xl mx-auto">
             <div className="tabs tabs-border border-gray-200 bg-gray-100 rounded-lg flex flex-wrap justify-center">
               <input
@@ -28,8 +28,8 @@ const Profile = () => {
                 className="tab font-bold w-1/3"
                 aria-label="Alamat"
               />
-              <div className="tab-content border-base-300 bg-base-100 p-10">
-                Tab content 2
+              <div className="tab-content border-base-300 bg-base-100 p-2">
+                <EditAddress />
               </div>
 
               <input
@@ -38,7 +38,7 @@ const Profile = () => {
                 className="tab font-bold w-1/3"
                 aria-label="Password"
               />
-              <div className="tab-content border-base-300 bg-base-100 p-10">
+              <div className="tab-content border-base-300 bg-base-100 p-2">
                 Tab content 3
               </div>
             </div>
