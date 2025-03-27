@@ -6,22 +6,45 @@ const Header = ({ toggleSidebar }) => {
   return (
     <div className="flex justify-between items-center bg-primary text-white p-4">
       <div className="flex items-center">
-        <button onClick={toggleSidebar} className="mr-4 p-2 bg-ghost rounded">
+        <label className="swap">
+          <input type="checkbox" onClick={toggleSidebar} />
+
           <svg
+            className="swap-on w-6 h-6 text-white"
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
-            viewBox="0 0 24 24"
             fill="none"
-            stroke="#ffffff"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            viewBox="0 0 24 24"
           >
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <path d="M9 3v18" />
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m9 5 7 7-7 7"
+            />
           </svg>
-        </button>
+
+          <svg
+            className="swap-off w-6 h-6 text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m15 19-7-7 7-7"
+            />
+          </svg>
+        </label>
       </div>
       <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="cursor-pointer">

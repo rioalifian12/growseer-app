@@ -61,6 +61,19 @@ export const registerUser = async (userData) => {
   }
 };
 
+export const createUser = async (userData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.post(`${API_URL}/user`, userData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error create user: ${error.message}`);
+    throw error;
+  }
+};
+
 export const loginUser = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/user/login`, credentials);

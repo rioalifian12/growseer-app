@@ -1,30 +1,55 @@
 import { useState, useEffect } from "react";
-import { fetchUsers } from "../../services/ServiceUser";
+import { fetchUsers, deleteUser } from "../../services/ServiceUser";
+import AddUser from "../../components/superadmin/AddUser";
+import Swal from "sweetalert2";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await fetchUsers();
-        setUsers(response);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     getUsers();
   }, []);
+
+  const getUsers = async () => {
+    try {
+      const response = await fetchUsers();
+      setUsers(response);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: "Apakah anda yakin?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#422ad5",
+        cancelButtonColor: "#f43098",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+      });
+
+      if (result.isConfirmed) {
+        await deleteUser(id);
+        await getUsers();
+        Swal.fire({
+          title: "Hapus user berhasil!",
+          icon: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   return (
     <div className="flex flex-col">
       <div className="flex-grow">
         <div className="container mx-auto p-4">
           <h1 className="text-3xl font-bold">Users List</h1>
-          <button className="btn btn-warning text-white rounded-box my-3">
-            Tambah Admin
-          </button>
+          <AddUser setUser={setUsers} />
           <div className="overflow-x-auto">
             <table className="table table-zebra">
               <thead>
@@ -64,7 +89,10 @@ const UsersList = () => {
                         <button className="btn btn-warning text-white rounded-box">
                           Ubah
                         </button>
-                        <button className="btn btn-error text-white rounded-box">
+                        <button
+                          className="btn btn-error text-white rounded-box"
+                          onClick={() => handleDelete(data.id)}
+                        >
                           Hapus
                         </button>
                       </td>
