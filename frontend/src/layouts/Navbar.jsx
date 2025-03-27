@@ -62,11 +62,14 @@ const Navbar = () => {
               >
                 <div className="card-body">
                   <span className="text-lg font-bold">8 Produk</span>
-                  <span className="text-success">Subtotal: Rp. 230000</span>
+                  <span className="text-primary">Subtotal: Rp. 230000</span>
                   <div className="card-actions">
-                    <button className="btn btn-primary btn-block text-white rounded-box">
+                    <Link
+                      to="/cart"
+                      className="btn btn-primary btn-block text-white rounded-box"
+                    >
                       Lihat Keranjang
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -109,7 +112,9 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <a className="text-sm">Pesanan Saya</a>
+                      <Link to="/order" className="text-sm">
+                        Pesanan Saya
+                      </Link>
                     </li>
                     <li>
                       <button
@@ -174,7 +179,9 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <a className="text-sm">Pesanan Saya</a>
+                      <Link to="/order" className="text-sm">
+                        Pesanan Saya
+                      </Link>
                     </li>
                     <li>
                       <button

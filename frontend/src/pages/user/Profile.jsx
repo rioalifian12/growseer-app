@@ -10,7 +10,7 @@ const Profile = () => {
       <Navbar />
       <div className="flex-grow">
         <div className="container mx-auto p-4">
-          <div className="w-full max-w-xl mx-auto">
+          <div className="w-full max-w-5xl mx-auto">
             <div className="tabs tabs-border bg-gray-100 rounded-lg flex flex-wrap justify-center">
               <input
                 type="radio"

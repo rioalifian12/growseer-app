@@ -8,10 +8,18 @@ import Layout from "../layouts/Layout";
 import FormLogin from "../components/FormLogin";
 import FormRegister from "../components/FormRegister";
 import Home from "../pages/Home";
-import SuperadminPage from "../pages/superadmin/SuperadminPage";
-import InventoryPage from "../pages/inventory/InventoryPage";
-import SalesPage from "../pages/sales/SalesPage";
+
 import Profile from "../pages/user/Profile";
+import Order from "../pages/user/Order";
+
+import SuperadminPage from "../pages/superadmin/SuperadminPage";
+import UsersList from "../pages/superadmin/UsersList";
+import AppLogList from "../pages/superadmin/AppLogList";
+
+import InventoryPage from "../pages/inventory/InventoryPage";
+
+import SalesPage from "../pages/sales/SalesPage";
+
 import { AuthProvider } from "../context/AuthContext";
 
 const AppRoutes = () => {
@@ -23,6 +31,7 @@ const AppRoutes = () => {
           <Route path="/login" element={<FormLogin />} />
           <Route path="/register" element={<FormRegister />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/order" element={<Order />} />
 
           <Route
             path="/superadmin"
@@ -33,6 +42,23 @@ const AppRoutes = () => {
             }
           />
           <Route
+            path="/users"
+            element={
+              <Layout>
+                <UsersList />
+              </Layout>
+            }
+          />
+          <Route
+            path="/app-log"
+            element={
+              <Layout>
+                <AppLogList />
+              </Layout>
+            }
+          />
+
+          <Route
             path="/inventory"
             element={
               <Layout>
@@ -40,6 +66,7 @@ const AppRoutes = () => {
               </Layout>
             }
           />
+
           <Route
             path="/sales"
             element={

@@ -10,17 +10,14 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
+    <div className="flex">
       <Sidebar isOpen={isSidebarOpen} />
 
-      {/* Konten utama */}
       <div className="flex flex-col flex-grow">
-        {/* Header */}
         <Header toggleSidebar={toggleSidebar} />
-
-        {/* Konten halaman */}
-        <div className="flex-grow p-4 bg-gray-100">{children}</div>
+        <div className="flex-grow p-4 bg-gray-100 h-[calc(100vh-74px)] overflow-auto">
+          {children}
+        </div>
       </div>
     </div>
   );

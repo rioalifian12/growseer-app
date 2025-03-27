@@ -3,27 +3,25 @@ import { useAuth } from "../context/AuthContext";
 
 const Sidebar = ({ isOpen }) => {
   const location = useLocation();
-  const { user } = useAuth(); // Dapatkan user dari context
+  const { user } = useAuth();
 
-  // **Menu berdasarkan role pengguna**
   const menuItems = {
     superadmin: [
-      { path: "/users", label: "👥 Users" },
-      { path: "/app-log", label: "📝 App Log" },
-      { path: "/categories", label: "📂 Categories" },
+      { path: "/superadmin", label: "Dashboard" },
+      { path: "/users", label: "Users" },
+      { path: "/app-log", label: "App Log" },
     ],
     inventory: [
-      { path: "/products", label: "📦 Products" },
-      { path: "/inventory-flow", label: "🔄 Inventory Flow" },
+      { path: "/products", label: "Products" },
+      { path: "/inventory-flow", label: "Inventory Flow" },
     ],
     sales: [
-      { path: "/customers", label: "👥 Customers" },
-      { path: "/orders", label: "📃 Orders" },
+      { path: "/customers", label: "Customers" },
+      { path: "/orders", label: "Orders" },
     ],
   };
 
-  // **Ambil menu sesuai role pengguna**
-  const role = user?.role || "guest"; // Jika tidak ada user, anggap sebagai "guest"
+  const role = user?.role;
   const menus = menuItems[role] || [];
 
   return (
@@ -33,9 +31,7 @@ const Sidebar = ({ isOpen }) => {
     >
       {isOpen && (
         <>
-          <h2 className="text-2xl font-bold mb-6 capitalize">
-            {role} Dashboard
-          </h2>
+          <h2 className="text-2xl font-bold mb-6 capitalize">Growseer</h2>
           <ul>
             {menus.map((menu) => (
               <li
