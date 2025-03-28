@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchUsers, deleteUser } from "../../services/ServiceUser";
 import AddUser from "../../components/superadmin/AddUser";
+import EditUser from "../../components/superadmin/EditUser";
 import Swal from "sweetalert2";
 
 const UsersList = () => {
@@ -17,6 +18,16 @@ const UsersList = () => {
     } catch (error) {
       console.error("Error fetching users:", error);
     }
+  };
+
+  const handleUserAdded = (newUser) => {
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
+  const handleUserUpdated = (updatedUser) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
   };
 
   const handleDelete = async (id) => {
@@ -49,7 +60,7 @@ const UsersList = () => {
       <div className="flex-grow">
         <div className="container mx-auto p-4">
           <h1 className="text-3xl font-bold">Users List</h1>
-          <AddUser setUser={setUsers} />
+          <AddUser onUserAdded={handleUserAdded} />
           <div className="overflow-x-auto">
             <table className="table table-zebra">
               <thead>
@@ -86,9 +97,7 @@ const UsersList = () => {
                           : "-"}
                       </td>
                       <td className="flex gap-1">
-                        <button className="btn btn-warning text-white rounded-box">
-                          Ubah
-                        </button>
+                        <EditUser id={data.id} onUserUpdated={getUsers} />
                         <button
                           className="btn btn-error text-white rounded-box"
                           onClick={() => handleDelete(data.id)}

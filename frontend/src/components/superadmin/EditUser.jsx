@@ -1,24 +1,41 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { createUser } from "../../services/ServiceUser";
+import { fetchUserById, updateUser } from "../../services/ServiceUser";
 import Swal from "sweetalert2";
 
-const AddUser = ({ onUserAdded }) => {
+const EditUser = ({ id, onUserUpdated }) => {
   const [error, setError] = useState([]);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const modalRef = useRef(null);
+
+  useEffect(() => {
+    const getUserById = async () => {
+      const user = await fetchUserById(id);
+      if (user) {
+        setValue("name", user.name);
+        setValue("phone", user.phone);
+        setValue("role", user.role);
+      }
+    };
+    getUserById();
+  }, [id, setValue]);
 
   const onSubmit = async (data) => {
     try {
-      const newUser = await createUser(data);
+      const updatedUser = await updateUser(id, data);
+
       Swal.fire({
-        title: "Tambah user berhasil!",
+        title: "Edit user berhasil!",
         icon: "success",
       });
 
-      onUserAdded(newUser.newUser);
+      onUserUpdated(updatedUser.user);
+      modalRef.current.close();
     } catch (error) {
-      setError(error.response?.data?.errors || []);
+      console.error(
+        "Error updating user:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -30,10 +47,10 @@ const AddUser = ({ onUserAdded }) => {
   return (
     <>
       <button
-        className="btn btn-info text-white rounded-box my-3"
+        className="btn btn-warning text-white rounded-box"
         onClick={() => modalRef.current.showModal()}
       >
-        Tambah Admin
+        Ubah
       </button>
       <dialog ref={modalRef} className="modal">
         <div className="modal-box max-w-xl">
@@ -57,56 +74,10 @@ const AddUser = ({ onUserAdded }) => {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            Tambah Admin
+            Ubah
           </h3>
           <div className="modal-action">
             <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-              <label
-                htmlFor="email"
-                className="fieldset-label font-semibold text-black my-2"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                className={`input rounded-box w-full ${
-                  getErrorMessage("email")
-                    ? "input-error"
-                    : "focus:input-primary"
-                } focus:outline-0`}
-                name="email"
-                {...register("email", { required: true })}
-                placeholder="Email"
-              />
-              {getErrorMessage("email") && (
-                <div className="text-error text-sm">
-                  {getErrorMessage("email")}
-                </div>
-              )}
-
-              <label
-                htmlFor="password"
-                className="fieldset-label font-semibold text-black my-2"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                className={`input rounded-box w-full ${
-                  getErrorMessage("password")
-                    ? "input-error"
-                    : "focus:input-primary"
-                } focus:outline-0`}
-                name="password"
-                {...register("password", { required: true })}
-                placeholder="Password"
-              />
-              {getErrorMessage("password") && (
-                <div className="text-error text-sm">
-                  {getErrorMessage("password")}
-                </div>
-              )}
-
               <label
                 htmlFor="name"
                 className="fieldset-label font-semibold text-black my-2"
@@ -200,4 +171,4 @@ const AddUser = ({ onUserAdded }) => {
   );
 };
 
-export default AddUser;
+export default EditUser;
