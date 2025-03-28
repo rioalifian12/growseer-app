@@ -190,7 +190,7 @@ const updateUser = async (req, res) => {
     const user = await User.findByPk(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const { checkRole } = req.user;
+    const checkRole = req.user;
 
     user.name = name || user.name;
     user.phone = phone || user.phone;
@@ -204,7 +204,7 @@ const updateUser = async (req, res) => {
     }
 
     // role boleh diubah hanya oleh superadmin
-    if (checkRole === "superadmin") {
+    if (checkRole.role === "superadmin") {
       user.role = role || user.role;
     }
 

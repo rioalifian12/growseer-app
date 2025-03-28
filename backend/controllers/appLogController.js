@@ -5,7 +5,7 @@ const getAppLog = async (req, res) => {
   try {
     const logs = await AppLog.findAll();
     if (!logs) {
-      return res.status(404).json({ message: "Product not found!" });
+      return res.status(404).json({ message: "Log not found!" });
     }
     res.status(200).json(logs);
   } catch (error) {

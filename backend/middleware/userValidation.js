@@ -58,6 +58,19 @@ const validateUser = [
     })
     .optional(),
 
+  body("address")
+    .notEmpty()
+    .withMessage("Address cannot be empty!")
+    .custom(async (address, { req }) => {
+      const { id } = req.params;
+      if (id) {
+        const user = await User.findByPk(id);
+        if (!user) throw new Error("User not found");
+        if (address === user.address) return true;
+      }
+    })
+    .optional(),
+
   body("role")
     .custom(async (role, { req }) => {
       const { id } = req.params;
