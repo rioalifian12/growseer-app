@@ -79,7 +79,7 @@ const createProduct = async (req, res) => {
         productId: product.id,
         type: "in",
         quantity: stockCarton,
-        description: `Initial stock added: ${stockCarton} cartons`,
+        description: `Stok awal ditambahkan ${stockCarton} karton`,
       });
     }
 
@@ -156,7 +156,7 @@ const updateProduct = async (req, res) => {
         productId: product.id,
         type,
         quantity: Math.abs(stockChange),
-        description: `Stock ${type} by ${Math.abs(stockChange)}`,
+        description: `Stok ${type} sebanyak ${Math.abs(stockChange)}`,
       });
     }
     res.status(200).json({

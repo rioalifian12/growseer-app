@@ -66,8 +66,8 @@ const UsersList = () => {
               <thead>
                 <tr>
                   <th></th>
-                  <th>Email</th>
                   <th>Nama</th>
+                  <th>Email</th>
                   <th>No HP</th>
                   <th>Alamat</th>
                   <th>Maps</th>
@@ -83,8 +83,8 @@ const UsersList = () => {
                   users.map((data, index) => (
                     <tr key={index}>
                       <th>{index + 1}</th>
-                      <td>{data.email}</td>
                       <td>{data.name}</td>
+                      <td>{data.email}</td>
                       <td>{data.phone}</td>
                       <td>{data.address ? data.address : "-"}</td>
                       <td>{data.mapsUrl ? data.mapsUrl : "-"}</td>

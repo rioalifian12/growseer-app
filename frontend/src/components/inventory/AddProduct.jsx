@@ -1,22 +1,31 @@
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { createUser } from "../../services/ServiceUser";
+import { createProduct } from "../../services/ServiceProduct";
 import Swal from "sweetalert2";
 
-const AddUser = ({ onUserAdded }) => {
+const AddProduct = ({ onProductAdded }) => {
   const [error, setError] = useState([]);
   const { register, handleSubmit } = useForm();
   const modalRef = useRef(null);
 
   const onSubmit = async (data) => {
     try {
-      const newUser = await createUser(data);
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("pricePerCarton", data.pricePerCarton);
+      formData.append("pricePerBox", data.pricePerBox);
+      formData.append("boxPerCarton", data.boxPerCarton);
+      formData.append("stockCarton", data.stockCarton);
+      formData.append("description", data.description);
+      formData.append("imageUrl", data.imageUrl[0]);
+
+      const newProduct = await createProduct(formData);
       Swal.fire({
-        title: "Tambah user berhasil!",
+        title: "Tambah produk berhasil!",
         icon: "success",
       });
 
-      onUserAdded(newUser.newUser);
+      onProductAdded(newProduct.product);
     } catch (error) {
       setError(error.response?.data?.errors || []);
     }
@@ -33,7 +42,7 @@ const AddUser = ({ onUserAdded }) => {
         className="btn btn-info text-white rounded-box my-3"
         onClick={() => modalRef.current.showModal()}
       >
-        Tambah Admin
+        Tambah
       </button>
       <dialog ref={modalRef} className="modal">
         <div className="modal-box max-w-xl">
@@ -57,48 +66,14 @@ const AddUser = ({ onUserAdded }) => {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            Tambah Admin
+            Tambah
           </h3>
           <div className="modal-action">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-              <label className="fieldset-label font-semibold text-black my-2">
-                Email
-              </label>
-              <input
-                type="email"
-                className={`input rounded-box w-full ${
-                  getErrorMessage("email")
-                    ? "input-error"
-                    : "focus:input-primary"
-                } focus:outline-0`}
-                {...register("email", { required: true })}
-                placeholder="Email"
-              />
-              {getErrorMessage("email") && (
-                <div className="text-error text-sm">
-                  {getErrorMessage("email")}
-                </div>
-              )}
-
-              <label className="fieldset-label font-semibold text-black my-2">
-                Password
-              </label>
-              <input
-                type="password"
-                className={`input rounded-box w-full ${
-                  getErrorMessage("password")
-                    ? "input-error"
-                    : "focus:input-primary"
-                } focus:outline-0`}
-                {...register("password", { required: true })}
-                placeholder="Password"
-              />
-              {getErrorMessage("password") && (
-                <div className="text-error text-sm">
-                  {getErrorMessage("password")}
-                </div>
-              )}
-
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              encType="multipart/form-data"
+              className="w-full"
+            >
               <label className="fieldset-label font-semibold text-black my-2">
                 Nama
               </label>
@@ -110,7 +85,7 @@ const AddUser = ({ onUserAdded }) => {
                     : "focus:input-primary"
                 } focus:outline-0`}
                 {...register("name", { required: true })}
-                placeholder="Name"
+                placeholder="Nama"
               />
               {getErrorMessage("name") && (
                 <div className="text-error text-sm">
@@ -119,43 +94,115 @@ const AddUser = ({ onUserAdded }) => {
               )}
 
               <label className="fieldset-label font-semibold text-black my-2">
-                No HP
+                Harga Per Kardus
               </label>
               <input
-                type="tel"
+                type="text"
                 className={`input rounded-box w-full ${
-                  getErrorMessage("phone")
+                  getErrorMessage("pricePerCarton")
                     ? "input-error"
                     : "focus:input-primary"
                 } focus:outline-0`}
-                {...register("phone", { required: true })}
-                placeholder="No HP"
+                {...register("pricePerCarton", { required: true })}
+                placeholder="Harga Per Kardus"
               />
-              {getErrorMessage("phone") && (
+              {getErrorMessage("pricePerCarton") && (
                 <div className="text-error text-sm">
-                  {getErrorMessage("phone")}
+                  {getErrorMessage("pricePerCarton")}
                 </div>
               )}
 
               <label className="fieldset-label font-semibold text-black my-2">
-                Role
+                Harga Per Box
               </label>
-              <select
-                defaultValue="Pilih Role"
-                className={`select rounded-box w-full ${
-                  getErrorMessage("role")
-                    ? "select-error"
-                    : "focus:select-primary"
+              <input
+                type="text"
+                className={`input rounded-box w-full ${
+                  getErrorMessage("pricePerBox")
+                    ? "input-error"
+                    : "focus:input-primary"
                 } focus:outline-0`}
-                {...register("role", { required: true })}
-              >
-                <option disabled={true}>Pilih Role</option>
-                <option value="inventory">Inventory</option>
-                <option value="sales">Sales</option>
-              </select>
-              {getErrorMessage("role") && (
+                {...register("pricePerBox", { required: true })}
+                placeholder="Harga Per Box"
+              />
+              {getErrorMessage("pricePerBox") && (
                 <div className="text-error text-sm">
-                  {getErrorMessage("role")}
+                  {getErrorMessage("pricePerBox")}
+                </div>
+              )}
+
+              <label className="fieldset-label font-semibold text-black my-2">
+                Box Per Kardus
+              </label>
+              <input
+                type="text"
+                className={`input rounded-box w-full ${
+                  getErrorMessage("boxPerCarton")
+                    ? "input-error"
+                    : "focus:input-primary"
+                } focus:outline-0`}
+                {...register("boxPerCarton", { required: true })}
+                placeholder="Box Per Kardus"
+              />
+              {getErrorMessage("boxPerCarton") && (
+                <div className="text-error text-sm">
+                  {getErrorMessage("boxPerCarton")}
+                </div>
+              )}
+
+              <label className="fieldset-label font-semibold text-black my-2">
+                Stok
+              </label>
+              <input
+                type="text"
+                className={`input rounded-box w-full ${
+                  getErrorMessage("stockCarton")
+                    ? "input-error"
+                    : "focus:input-primary"
+                } focus:outline-0`}
+                {...register("stockCarton", { required: true })}
+                placeholder="Stok"
+              />
+              {getErrorMessage("stockCarton") && (
+                <div className="text-error text-sm">
+                  {getErrorMessage("stockCarton")}
+                </div>
+              )}
+
+              <label className="fieldset-label font-semibold text-black my-2">
+                Deksripsi
+              </label>
+              <textarea
+                type="text"
+                className={`textarea rounded-box w-full ${
+                  getErrorMessage("description")
+                    ? "textarea-error"
+                    : "focus:textarea-primary"
+                } focus:outline-0`}
+                {...register("description", { required: true })}
+                placeholder="Deskripsi"
+              ></textarea>
+              {getErrorMessage("description") && (
+                <div className="text-error text-sm">
+                  {getErrorMessage("description")}
+                </div>
+              )}
+
+              <label className="fieldset-label font-semibold text-black my-2">
+                Gambar
+              </label>
+              <input
+                type="file"
+                className={`file-input rounded-box w-full ${
+                  getErrorMessage("imageUrl")
+                    ? "input-error"
+                    : "focus:input-primary"
+                } focus:outline-0`}
+                {...register("imageUrl")}
+              />
+              {getErrorMessage("imageUrl") && (
+                <div className="text-error text-sm">
+                  {getErrorMessage("imageUrl")}
                 </div>
               )}
 
@@ -180,4 +227,4 @@ const AddUser = ({ onUserAdded }) => {
   );
 };
 
-export default AddUser;
+export default AddProduct;

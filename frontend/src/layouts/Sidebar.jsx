@@ -8,16 +8,18 @@ const Sidebar = ({ isOpen }) => {
   const menuItems = {
     superadmin: [
       { path: "/superadmin", label: "Dashboard" },
-      { path: "/users", label: "Users" },
+      { path: "/users", label: "User" },
       { path: "/app-log", label: "App Log" },
     ],
     inventory: [
-      { path: "/products", label: "Products" },
-      { path: "/inventory-flow", label: "Inventory Flow" },
+      { path: "/inventory", label: "Dashboard" },
+      { path: "/products", label: "Product" },
+      { path: "/inventory-flow", label: "Flow Produk" },
     ],
     sales: [
-      { path: "/customers", label: "Customers" },
-      { path: "/orders", label: "Orders" },
+      { path: "/sales", label: "Dashboard" },
+      { path: "/customers", label: "Customer" },
+      { path: "/orders", label: "Order" },
     ],
   };
 

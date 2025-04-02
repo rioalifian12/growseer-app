@@ -7,7 +7,7 @@ const Header = ({ toggleSidebar }) => {
     <div className="flex justify-between items-center bg-primary text-white p-4">
       <div className="flex items-center">
         <label className="swap">
-          <input type="checkbox" onClick={toggleSidebar} />
+          <input type="checkbox" id="swap" onClick={toggleSidebar} />
 
           <svg
             className="swap-on w-6 h-6 text-white"

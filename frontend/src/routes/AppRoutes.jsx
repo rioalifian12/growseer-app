@@ -13,10 +13,12 @@ import Profile from "../pages/user/Profile";
 import Order from "../pages/user/Order";
 
 import SuperadminPage from "../pages/superadmin/SuperadminPage";
-import UsersList from "../pages/superadmin/UsersList";
+import UserList from "../pages/superadmin/UserList";
 import AppLogList from "../pages/superadmin/AppLogList";
 
 import InventoryPage from "../pages/inventory/InventoryPage";
+import ProductList from "../pages/inventory/ProductList";
+import InventoryFlowList from "../pages/inventory/InventoryFlowList";
 
 import SalesPage from "../pages/sales/SalesPage";
 
@@ -45,7 +47,7 @@ const AppRoutes = () => {
             path="/users"
             element={
               <Layout>
-                <UsersList />
+                <UserList />
               </Layout>
             }
           />
@@ -63,6 +65,22 @@ const AppRoutes = () => {
             element={
               <Layout>
                 <InventoryPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/products"
+            element={
+              <Layout>
+                <ProductList />
+              </Layout>
+            }
+          />
+          <Route
+            path="/inventory-flow"
+            element={
+              <Layout>
+                <InventoryFlowList />
               </Layout>
             }
           />

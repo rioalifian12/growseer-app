@@ -32,10 +32,7 @@ const EditUser = ({ id, onUserUpdated }) => {
       onUserUpdated(updatedUser.user);
       modalRef.current.close();
     } catch (error) {
-      console.error(
-        "Error updating user:",
-        error.response?.data || error.message
-      );
+      setError(error.response?.data?.errors || []);
     }
   };
 
@@ -78,10 +75,7 @@ const EditUser = ({ id, onUserUpdated }) => {
           </h3>
           <div className="modal-action">
             <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-              <label
-                htmlFor="name"
-                className="fieldset-label font-semibold text-black my-2"
-              >
+              <label className="fieldset-label font-semibold text-black my-2">
                 Nama
               </label>
               <input
@@ -91,7 +85,6 @@ const EditUser = ({ id, onUserUpdated }) => {
                     ? "input-error"
                     : "focus:input-primary"
                 } focus:outline-0`}
-                name="name"
                 {...register("name", { required: true })}
                 placeholder="Name"
               />
@@ -101,10 +94,7 @@ const EditUser = ({ id, onUserUpdated }) => {
                 </div>
               )}
 
-              <label
-                htmlFor="phone"
-                className="fieldset-label font-semibold text-black my-2"
-              >
+              <label className="fieldset-label font-semibold text-black my-2">
                 No HP
               </label>
               <input
@@ -114,7 +104,6 @@ const EditUser = ({ id, onUserUpdated }) => {
                     ? "input-error"
                     : "focus:input-primary"
                 } focus:outline-0`}
-                name="phone"
                 {...register("phone", { required: true })}
                 placeholder="No HP"
               />
@@ -124,10 +113,7 @@ const EditUser = ({ id, onUserUpdated }) => {
                 </div>
               )}
 
-              <label
-                htmlFor="role"
-                className="fieldset-label font-semibold text-black my-2"
-              >
+              <label className="fieldset-label font-semibold text-black my-2">
                 Role
               </label>
               <select
@@ -137,7 +123,6 @@ const EditUser = ({ id, onUserUpdated }) => {
                     ? "select-error"
                     : "focus:select-primary"
                 } focus:outline-0`}
-                name="role"
                 {...register("role", { required: true })}
               >
                 <option disabled={true}>Pilih Role</option>
