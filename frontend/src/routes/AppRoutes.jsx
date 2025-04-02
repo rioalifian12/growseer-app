@@ -21,6 +21,7 @@ import ProductList from "../pages/inventory/ProductList";
 import InventoryFlowList from "../pages/inventory/InventoryFlowList";
 
 import SalesPage from "../pages/sales/SalesPage";
+import CustomerList from "../pages/sales/CustomerList";
 
 import { AuthProvider } from "../context/AuthContext";
 
@@ -90,6 +91,14 @@ const AppRoutes = () => {
             element={
               <Layout>
                 <SalesPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/customers"
+            element={
+              <Layout>
+                <CustomerList />
               </Layout>
             }
           />

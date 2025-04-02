@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getUsers,
+  getUsersByReferral,
   getUserById,
   register,
   createUser,
@@ -18,6 +19,7 @@ const { logger } = require("../middleware/logger");
 const router = express.Router();
 
 router.get("/", logger, authUser, getUsers);
+router.get("/customer", logger, authUser, getUsersByReferral);
 router.get("/:id", logger, authUser, getUserById);
 router.post("/", logger, authUser, isAdmin, validateUser, createUser);
 router.post("/register", logger, validateUser, register);

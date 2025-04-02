@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const { validate: isUUID } = require("uuid");
 const { v4: uuidv4 } = require("uuid");
+const { where } = require("sequelize");
 require("dotenv").config();
 
 // Get All Users
@@ -13,6 +14,35 @@ const getUsers = async (req, res) => {
       return res.status(404).json({ message: "User not found!" });
     }
     res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error!",
+      error: error.message,
+    });
+  }
+};
+
+const getUsersByReferral = async (req, res) => {
+  try {
+    const salesId = req.user.id;
+
+    const salesUser = await User.findOne({
+      where: { id: salesId },
+    });
+
+    if (!salesUser) {
+      return res.status(404).json({ message: "Sales not found!" });
+    }
+
+    const customers = await User.findAll({
+      where: { referredBy: salesUser.referralCode },
+      attributes: { exclude: ["password"] },
+    });
+
+    if (!customers) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    res.status(200).json(customers);
   } catch (error) {
     res.status(500).json({
       message: "Internal server error!",
@@ -270,6 +300,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   getUsers,
+  getUsersByReferral,
   getUserById,
   register,
   createUser,

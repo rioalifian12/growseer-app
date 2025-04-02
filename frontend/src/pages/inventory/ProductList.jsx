@@ -91,7 +91,7 @@ const ProductList = () => {
                       <td>{data.stockCarton}</td>
                       <td>{data.unitType}</td>
                       <td>{data.description}</td>
-                      <td>{data.imageUrl}</td>
+                      <td>{data.imageUrl ? data.imageUrl : "-"}</td>
                       <td className="flex gap-1">
                         <EditProduct
                           id={data.id}
