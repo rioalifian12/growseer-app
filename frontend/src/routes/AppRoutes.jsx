@@ -8,6 +8,7 @@ import Layout from "../layouts/Layout";
 import FormLogin from "../components/FormLogin";
 import FormRegister from "../components/FormRegister";
 import Home from "../pages/Home";
+import ProductDetail from "../pages/ProductDetail";
 
 import Profile from "../pages/user/Profile";
 import Order from "../pages/user/Order";
@@ -34,6 +35,7 @@ const AppRoutes = () => {
           <Route path="/login" element={<FormLogin />} />
           <Route path="/register" element={<FormRegister />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/order" element={<Order />} />
 
           <Route
